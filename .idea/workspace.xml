@@ -2,12 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="721abe53-37e0-4ca9-b728-0955b89fad8e" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/example/lib/debug_log.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/android/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/example/android/app/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/ios/Podfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/Podfile.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/example/pubspec.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/example/pubspec.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flutter_phyp_ota.iml" beforeDir="false" afterPath="$PROJECT_DIR$/flutter_phyp_ota.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/android/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/src/main/java/com/zhonglingyi/flutter_phyp_ota/FlutterPhypOtaPlugin.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/java/com/zhonglingyi/flutter_phyp_ota/FlutterPhypOtaPlugin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/android/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/example/android/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Runner/Info.plist" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/Runner/Info.plist" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/flutter_phyp_ota.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/flutter_phyp_ota.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,8 +34,16 @@
     <property name="dart.analysis.tool.window.force.activate" value="true" />
     <property name="dart.analysis.tool.window.visible" value="false" />
     <property name="io.flutter.reload.alreadyRun" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/example/lib" />
     <property name="show.migrate.to.gradle.popup" value="false" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/android/src/main" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/example/lib" />
+    </key>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -49,21 +59,25 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
-    <state width="1386" height="3" key="GridCell.Tab.0.bottom" timestamp="1624415959383">
+    <state x="423" y="25" key="#xdebugger.evaluate" timestamp="1624430069405">
       <screen x="0" y="25" width="1440" height="821" />
     </state>
-    <state width="1386" height="3" key="GridCell.Tab.0.bottom/0.25.1440.821/1440.-45.1920.1055@0.25.1440.821" timestamp="1624415959383" />
-    <state width="1386" height="3" key="GridCell.Tab.0.center" timestamp="1624415959383">
+    <state x="423" y="25" key="#xdebugger.evaluate/0.25.1440.821/1440.-45.1920.1055@0.25.1440.821" timestamp="1624430069405" />
+    <state width="1386" height="3" key="GridCell.Tab.0.bottom" timestamp="1624438950547">
       <screen x="0" y="25" width="1440" height="821" />
     </state>
-    <state width="1386" height="3" key="GridCell.Tab.0.center/0.25.1440.821/1440.-45.1920.1055@0.25.1440.821" timestamp="1624415959383" />
-    <state width="1386" height="3" key="GridCell.Tab.0.left" timestamp="1624415959382">
+    <state width="1386" height="3" key="GridCell.Tab.0.bottom/0.25.1440.821/1440.-45.1920.1055@0.25.1440.821" timestamp="1624438950547" />
+    <state width="1386" height="3" key="GridCell.Tab.0.center" timestamp="1624438950546">
       <screen x="0" y="25" width="1440" height="821" />
     </state>
-    <state width="1386" height="3" key="GridCell.Tab.0.left/0.25.1440.821/1440.-45.1920.1055@0.25.1440.821" timestamp="1624415959382" />
-    <state width="1386" height="3" key="GridCell.Tab.0.right" timestamp="1624415959383">
+    <state width="1386" height="3" key="GridCell.Tab.0.center/0.25.1440.821/1440.-45.1920.1055@0.25.1440.821" timestamp="1624438950546" />
+    <state width="1386" height="3" key="GridCell.Tab.0.left" timestamp="1624438950546">
       <screen x="0" y="25" width="1440" height="821" />
     </state>
-    <state width="1386" height="3" key="GridCell.Tab.0.right/0.25.1440.821/1440.-45.1920.1055@0.25.1440.821" timestamp="1624415959383" />
+    <state width="1386" height="3" key="GridCell.Tab.0.left/0.25.1440.821/1440.-45.1920.1055@0.25.1440.821" timestamp="1624438950546" />
+    <state width="1386" height="3" key="GridCell.Tab.0.right" timestamp="1624438950546">
+      <screen x="0" y="25" width="1440" height="821" />
+    </state>
+    <state width="1386" height="3" key="GridCell.Tab.0.right/0.25.1440.821/1440.-45.1920.1055@0.25.1440.821" timestamp="1624438950546" />
   </component>
 </project>

@@ -9,4 +9,39 @@ class FlutterPhypOta {
     final String version = await _channel.invokeMethod('getPlatformVersion');
     return version;
   }
+
+  static Future<bool> startOta(String address, String filePath, {PhypOtaProcessListener listener}) async {
+    assert(address != null, "address can not be null");
+    assert(filePath != null, "file can not be null");
+
+    _channel.setMethodCallHandler((MethodCall call) {
+      switch (call.method) {
+        case "onOtaError":
+          listener?.onOtaError(call.arguments);
+          break;
+        case "onOtaProcess":
+          listener?.onOtaProcess(call.arguments);
+          break;
+        case "onOtaSuccess":
+          listener?.onOtaSuccess();
+          break;
+        default:
+          break;
+      }
+      return null;
+    });
+
+    return await _channel.invokeMethod('startOta', <String, dynamic>{
+      'address': address,
+      'filePath': filePath,
+    });
+  }
+}
+
+class PhypOtaProcessListener {
+  final void Function(int code) onOtaError;
+  final void Function(double progress) onOtaProcess;
+  final void Function() onOtaSuccess;
+
+  PhypOtaProcessListener({this.onOtaError, this.onOtaProcess, this.onOtaSuccess});
 }

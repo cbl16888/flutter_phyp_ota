@@ -24,6 +24,10 @@
 	<true/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+  <string>需要访问您的蓝牙，我们将通过蓝牙传输手环数据信息</string>
+  <key>NSBluetoothPeripheralUsageDescription</key>
+  <string>需要访问您的蓝牙，我们将通过蓝牙传输手环数据信息</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>UISupportedInterfaceOrientations</key>

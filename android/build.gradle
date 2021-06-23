@@ -31,3 +31,7 @@ android {
         disable 'InvalidPackage'
     }
 }
+
+dependencies {
+    compile(name: 'phy_ota_sdk-1.0.7', ext: 'aar')
+}
