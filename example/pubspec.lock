@@ -8,6 +8,15 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.5.0-nullsafety.1"
+  bluetooth_helper:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: "feature/add_ios_supported"
+      resolved-ref: "9c213623f4595a7b4be36ffdfb057f21a5f20aea"
+      url: "git://github.com/cbl16888/flutter_bluetooth_helper.git"
+    source: git
+    version: "0.1.5"
   boolean_selector:
     dependency: transitive
     description:
