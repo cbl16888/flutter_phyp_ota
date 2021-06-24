@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bluetooth_helper/bluetooth_device.dart';
 import 'package:bluetooth_helper/bluetooth_helper.dart';
 import 'package:flutter/material.dart';
@@ -92,6 +94,8 @@ class _MyAppState extends State<MyApp> {
                     DebugLog.logDebug("设备已连接");
                     return;
                   }
+                  await _device?.disconnect();
+                  DebugLog.logDebug("开始搜索设备...");
                   await BluetoothHelper.me
                       .scan(
                           deviceName: deviceName,
@@ -191,7 +195,6 @@ class _MyAppState extends State<MyApp> {
     }
     await _device?.disconnect();
     _device?.eventCallback = null;
-    _device = null;
     setState(() {
       _isConnected = false;
     });
@@ -199,11 +202,16 @@ class _MyAppState extends State<MyApp> {
 
   _otaDevice() async {
     if (!_isConnected) {
+      _isOta = false;
       DebugLog.logDebug("蓝牙设备还未连接");
       return;
     }
+    var address = _device.deviceId;
+    if (Platform.isIOS) {
+      await _disconnectDevice();
+    }
     _isOta = true;
-    FlutterPhypOta.startOta(_device.deviceId, "assets/file.zip", listener: PhypOtaProcessListener(
+    FlutterPhypOta.startOta(address, "assets/file.zip", listener: PhypOtaProcessListener(
       onOtaError: (code) {
         _isOta = false;
         DebugLog.logDebug("固件升级失败,错误码: $code");
