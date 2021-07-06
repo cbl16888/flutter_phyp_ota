@@ -26,7 +26,7 @@ class _MyAppState extends State<MyApp> {
   String _otaCharacter;
   bool _isConnected = false;
   bool _isOta = false;
-  var deviceName = "ZLY_2012080145693";
+  var deviceName = "ZLY_2012080145697";
   static const String serviceId = "00001523-39cb-4c61-a082-38bfd3717074";
   static const String commandReadNotifyCharactersId =
       "00001526-39cb-4c61-a082-38bfd3717074";
@@ -211,19 +211,17 @@ class _MyAppState extends State<MyApp> {
       await _disconnectDevice();
     }
     _isOta = true;
-    FlutterPhypOta.startOta(address, "assets/file.zip", listener: PhypOtaProcessListener(
-      onOtaError: (code) {
-        _isOta = false;
-        DebugLog.logDebug("固件升级失败,错误码: $code");
-      },
-      onOtaSuccess: () {
-        _isOta = false;
-        DebugLog.logDebug("固件升级成功");
-      },
-      onOtaProcess: (progress) {
-        _isOta = false;
-        DebugLog.logDebug("固件升级中, $progress");
-      }
-    ));
+    FlutterPhypOta.startOta(address, "assets/hrs_2.02.hex",
+        fileInAsset: true,
+        listener: PhypOtaProcessListener(onOtaError: (code) {
+          _isOta = false;
+          DebugLog.logDebug("固件升级失败,错误码: $code");
+        }, onOtaSuccess: () {
+          _isOta = false;
+          DebugLog.logDebug("固件升级成功");
+        }, onOtaProcess: (progress) {
+          _isOta = false;
+          DebugLog.logDebug("固件升级中, $progress");
+        }));
   }
 }

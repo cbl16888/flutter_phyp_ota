@@ -10,7 +10,7 @@ class FlutterPhypOta {
     return version;
   }
 
-  static Future<bool> startOta(String address, String filePath, {PhypOtaProcessListener listener}) async {
+  static Future<bool> startOta(String address, String filePath, {bool fileInAsset = false, PhypOtaProcessListener listener}) async {
     assert(address != null, "address can not be null");
     assert(filePath != null, "file can not be null");
 
@@ -34,6 +34,7 @@ class FlutterPhypOta {
     return await _channel.invokeMethod('startOta', <String, dynamic>{
       'address': address,
       'filePath': filePath,
+      'fileInAsset': fileInAsset
     });
   }
 }

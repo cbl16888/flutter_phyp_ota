@@ -12,6 +12,7 @@
 @property (nonatomic, assign) bool isAvailable;
 @property (nonatomic, assign) bool needScan;
 @property (nonatomic, assign) bool isFound;
+@property (nonatomic, strong) NSObject<FlutterPluginRegistrar>* registrar;
 
 @end
 
@@ -32,6 +33,7 @@
                                      binaryMessenger:[registrar messenger]];
     FlutterPhypOtaPlugin* instance = [[FlutterPhypOtaPlugin alloc] init];
     instance.channel = channel;
+    instance.registrar = registrar;
     [registrar addMethodCallDelegate:instance channel:channel];
 }
 
@@ -41,6 +43,13 @@
     } else if ([@"startOta" isEqualToString:call.method]) {
         self.address = call.arguments[@"address"];
         self.filePath = call.arguments[@"filePath"];
+        BOOL fileInAsset = call.arguments[@"fileInAsset"];
+        
+        if (fileInAsset) {
+            NSString *key = [self.registrar lookupKeyForAsset:self.filePath];
+            self.filePath = [[NSBundle mainBundle] pathForResource:key ofType:nil];
+        }
+        
         if (self.isAvailable) {
             [self startScan];
         } else {
@@ -119,6 +128,8 @@ didSucceedConectPeripheral:(nullable CBPeripheral *)peripheral {
     self.manager.currentPeripheral = peripheral;
     [self.manager setUpdateMode: true];
     [self.manager startOTA];
+//    self.manager
+//    bSuc = [self.otaMnger startOTAWithLocFile:model.fileAbsolutePath];
     NSLog(@"开始OTA升级");
 //    self.manager updateOTAFirmwareConfirmOrder:<#(NSArray *)#> andPath:<#(NSString *)#>
 }
