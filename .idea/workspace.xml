@@ -2,15 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="721abe53-37e0-4ca9-b728-0955b89fad8e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/android/src/main/java/com/zhonglingyi/flutter_phyp_ota/PathUtils.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/android/src/main/java/com/zhonglingyi/flutter_phyp_ota/ResourceUtils.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/example/assets/hrs_2.02.hex" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/src/main/java/com/zhonglingyi/flutter_phyp_ota/FlutterPhypOtaPlugin.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/java/com/zhonglingyi/flutter_phyp_ota/FlutterPhypOtaPlugin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/example/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/libs/phy_ota_sdk-1.0.7.aar" beforeDir="false" afterPath="$PROJECT_DIR$/android/nativeLibs/phy_ota_sdk-1.0.7.aar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/android/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/example/android/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ios/Classes/FlutterPhypOtaPlugin.m" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Classes/FlutterPhypOtaPlugin.m" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/flutter_phyp_ota.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/flutter_phyp_ota.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,22 +66,22 @@
       <screen x="0" y="25" width="1440" height="821" />
     </state>
     <state x="423" y="25" key="#xdebugger.evaluate/0.25.1440.821/1440.-45.1920.1055@0.25.1440.821" timestamp="1624430069405" />
-    <state width="1386" height="3" key="GridCell.Tab.0.bottom" timestamp="1625550822457">
+    <state width="1386" height="3" key="GridCell.Tab.0.bottom" timestamp="1625651046547">
       <screen x="0" y="25" width="1440" height="821" />
     </state>
-    <state width="1386" height="3" key="GridCell.Tab.0.bottom/0.25.1440.821/1440.-45.1920.1055@0.25.1440.821" timestamp="1625550822457" />
-    <state width="1386" height="3" key="GridCell.Tab.0.center" timestamp="1625550822456">
+    <state width="1386" height="3" key="GridCell.Tab.0.bottom/0.25.1440.821/1440.-45.1920.1055@0.25.1440.821" timestamp="1625651046547" />
+    <state width="1386" height="3" key="GridCell.Tab.0.center" timestamp="1625651046546">
       <screen x="0" y="25" width="1440" height="821" />
     </state>
-    <state width="1386" height="3" key="GridCell.Tab.0.center/0.25.1440.821/1440.-45.1920.1055@0.25.1440.821" timestamp="1625550822456" />
-    <state width="1386" height="3" key="GridCell.Tab.0.left" timestamp="1625550822456">
+    <state width="1386" height="3" key="GridCell.Tab.0.center/0.25.1440.821/1440.-45.1920.1055@0.25.1440.821" timestamp="1625651046546" />
+    <state width="1386" height="3" key="GridCell.Tab.0.left" timestamp="1625651046546">
       <screen x="0" y="25" width="1440" height="821" />
     </state>
-    <state width="1386" height="3" key="GridCell.Tab.0.left/0.25.1440.821/1440.-45.1920.1055@0.25.1440.821" timestamp="1625550822456" />
-    <state width="1386" height="3" key="GridCell.Tab.0.right" timestamp="1625550822457">
+    <state width="1386" height="3" key="GridCell.Tab.0.left/0.25.1440.821/1440.-45.1920.1055@0.25.1440.821" timestamp="1625651046546" />
+    <state width="1386" height="3" key="GridCell.Tab.0.right" timestamp="1625651046547">
       <screen x="0" y="25" width="1440" height="821" />
     </state>
-    <state width="1386" height="3" key="GridCell.Tab.0.right/0.25.1440.821/1440.-45.1920.1055@0.25.1440.821" timestamp="1625550822457" />
+    <state width="1386" height="3" key="GridCell.Tab.0.right/0.25.1440.821/1440.-45.1920.1055@0.25.1440.821" timestamp="1625651046547" />
     <state x="359" y="124" width="721" height="622" key="find.popup" timestamp="1625539494056">
       <screen x="0" y="25" width="1440" height="821" />
     </state>

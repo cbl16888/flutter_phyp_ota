@@ -112,7 +112,7 @@
     if ([peripheral.identifier.UUIDString isEqualToString:self.address]) {
         self.isFound = true;
         [self.manager stopScan];
-        NSLog(@"发现设置,停止扫描,开始连接");
+        NSLog(@"发现设备,停止扫描,开始连接");
         [self.manager connectToPeripheral:peripheral];
     }
 }
