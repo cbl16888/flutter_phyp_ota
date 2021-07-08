@@ -61,7 +61,7 @@
         }
         self.originUUID = originUUID;
         self.filePath = call.arguments[@"filePath"];
-        BOOL fileInAsset = call.arguments[@"fileInAsset"];
+        BOOL fileInAsset = call.arguments[@"fileInAsset"] == 1;
         if (fileInAsset) {
             NSString *key = [self.registrar lookupKeyForAsset:self.filePath];
             self.filePath = [[NSBundle mainBundle] pathForResource:key ofType:nil];
