@@ -11,13 +11,13 @@
 #import "OTAManager.h"
 
 typedef NS_ENUM(NSInteger, BluetoothOpenState) {
-/*!
-*  蓝牙打开
-*/
+    /*!
+     *  蓝牙打开
+     */
     BluetoothOpenStateIsOpen = 0,
-/*!
-*  蓝牙关闭
-*/
+    /*!
+     *  蓝牙关闭
+     */
     BluetoothOpenStateIsClosed = 1
 };
 
@@ -71,6 +71,8 @@ didSucceedConectPeripheral:(nullable CBPeripheral *)peripheral;
 - (void)bluetoothManager:(nullable JCBluetoothManager*)manager
  didFailConectPeripheral:(nullable CBPeripheral *)peripheral;
 
+- (void)bluetoothManager:(nullable JCBluetoothManager*)manager peripheral:(nullable CBPeripheral *)peripheral didUpdateNotificationStateForCharacteristic:(nonnull CBCharacteristic *)characteristic error:(nullable NSError *)error;
+
 /*!
  *  收到已连接的外设传过来的数据
  *
@@ -110,6 +112,8 @@ typedef void (^failureBlock)(id _Nullable failureObject);
 @property (nonatomic,strong) successBlock _Nullable successBlock;
 @property (nonatomic,strong) failureBlock _Nullable failureBlock;
 
+@property (nonatomic, strong) CBCharacteristic * _Nullable writeOTAWithoutRespCharac;    //OTA写数据特性 无返回值
+
 /*!
  *  创建全局蓝牙管理中心
  *
@@ -142,8 +146,6 @@ typedef void (^failureBlock)(id _Nullable failureObject);
 
 /*!
  *  断开与外设蓝牙连接
- *
- *  @param peripheral -[in] 要断开的外设
  */
 - (void)disConnectToPeripheral;
 
@@ -164,4 +166,5 @@ typedef void (^failureBlock)(id _Nullable failureObject);
 - (void)sendOTACommand:(NSData *_Nonnull)data;
 
 - (void)sendOTAData:( NSData *_Nonnull)data;
+
 @end

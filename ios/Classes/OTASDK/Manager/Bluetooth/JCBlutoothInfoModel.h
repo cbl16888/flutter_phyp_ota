@@ -10,9 +10,11 @@
 #import <CoreBluetooth/CoreBluetooth.h>
 
 @interface JCBlutoothInfoModel : NSObject
+
 @property (nonatomic, strong) CBPeripheral *peripheral;
 @property (nonatomic, strong) NSDictionary *advertisementData;
-@property (nonatomic, strong) NSNumber *RSSI;
-@property (nonatomic, strong) NSString *realName;
-@property (nonatomic, copy) NSString *adverMacAddr;//需要固件广播数据包含MAC地址
+@property (nonatomic, strong) NSNumber     *RSSI;
+@property (nonatomic, strong) NSString     *realName;
+@property (nonatomic, copy)   NSString     *adverMacAddr;//需要固件广播数据包含MAC地址
+
 @end

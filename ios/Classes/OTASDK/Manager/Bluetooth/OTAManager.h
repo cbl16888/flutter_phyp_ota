@@ -7,12 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreBluetooth/CoreBluetooth.h>
+
 NS_ASSUME_NONNULL_BEGIN
 
-
+//APP模式下服务和特性
 #define SERVICE_UUID                                         @"0000ff01-0000-1000-8000-00805f9b34fb"
 #define CHARACTERISTIC_WRITE_UUID                            @"0000ff02-0000-1000-8000-00805f9b34fb"
-#define CHARACTERISTIC_READ_UUID                             @"0000ff10-0000-1000-8000-00805f9b34fb"
 
 /**电量相关*/
 #define SERVICE_BATTERY_UUID                                 @"0000180f-0000-1000-8000-00805f9b34fb"
@@ -24,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**OTA相关*/
 #define SERVICE_OTA_UUID                                     @"5833ff01-9b8b-5191-6142-22a4536ef123"
-#define CHARACTERISTIC_OTA_WRITE_UUID                        @"5833ff02-9b8b-5191-6142-22a4536ef123"//white
+#define CHARACTERISTIC_OTA_WRITE_UUID                        @"5833ff02-9b8b-5191-6142-22a4536ef123"//write
 #define CHARACTERISTIC_OTA_INDICATE_UUID                     @"5833ff03-9b8b-5191-6142-22a4536ef123"//notify
 #define CHARACTERISTIC_OTA_DATA_WRITE_UUID                   @"5833ff04-9b8b-5191-6142-22a4536ef123"
 
@@ -51,6 +52,13 @@ extern UInt8 const MESG_OPCO_RESP_OTAS_SEGM;
 extern UInt8 const MESG_OPCO_ISSU_OTAS_COMP;
 extern UInt8 const MESG_OPCO_RESP_OTAS_COMP;
 
+typedef NS_ENUM(NSInteger, OTAState) {
+    OTANoInit = 0,
+    OTAReady = 1,
+    OTALoading = 2,
+    OTAFinish = 3,
+    OTAError = 4
+};
 
 /**
  *  OTA协议
@@ -61,39 +69,39 @@ extern UInt8 const MESG_OPCO_RESP_OTAS_COMP;
 
 /**
  OTA progress
-
+ 
  @param manager 蓝牙管理中心
  @param progressValue 进度值
  */
 - (void)updateOTAProgressDataback:(nullable OTAManager *) manager
-                           feedBackInfo:(float)progressValue;
+                     feedBackInfo:(float)progressValue;
 
 /**
  OTA 数据全部发送完成
-
+ 
  @param manager 蓝牙管理中心
  @param isComplete 完成
  */
 - (void)updateOTAProgressDataback:(nullable OTAManager *) manager
-                     isComplete:(BOOL)isComplete;
+                       isComplete:(BOOL)isComplete;
 
 /**
  OTA 错误回传
-
+ 
  @param manager 蓝牙管理中心
  @param errorCode 错误码
  */
 - (void)updateOTAErrorCallBack:(nullable OTAManager *) manager
-                       errorCode:(NSUInteger)errorCode;
+                     errorCode:(NSUInteger)errorCode;
 
 /**
  reboot成功之后
-
+ 
  @param manager 蓝牙管理中心
  @param result 返回的结果
  */
 - (void)reBootOTASuccess:(nullable OTAManager *) manager
-           feedBackInfo:(BOOL)result reconnectBluetoothType:(NSString *_Nullable)OTAOrAPPType;
+            feedBackInfo:(BOOL)result reconnectBluetoothType:(NSString *_Nullable)OTAOrAPPType;
 
 @required
 
@@ -105,13 +113,20 @@ extern UInt8 const MESG_OPCO_RESP_OTAS_COMP;
 @property (nonatomic, assign) NSInteger maxPacketLength;//数据包的最大长度
 
 @property (nonatomic, assign) BOOL isSLB;//是否是Self boot
-@property(strong, nonatomic) NSString *OTAOrAPPType;//当前设备是OTA模式还是应用模式
+@property (nonatomic, strong) NSString *OTAOrAPPType;//当前设备是OTA模式还是应用模式
 @property (nonatomic, weak, nullable) id <OTAManagerDelegate> delegate;
 + (OTAManager *)shareOTAManager;
 
+@property (nonatomic, strong) NSString *bleKeyStr;//测试数据
+
+@property (nonatomic, strong) NSString *AESKey;
+
+@property (nonatomic, assign) OTAState otaState;
+
+@property (nonatomic, weak) CBCharacteristic *SLBNotificationCharacteristic;
 
 - (void)startOTA;
-
+- (void)securityOTAStart;
 - (void)updateOTAData:(NSData *)data;
 
 /**

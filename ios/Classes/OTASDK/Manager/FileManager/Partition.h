@@ -12,7 +12,6 @@ NS_ASSUME_NONNULL_BEGIN
 @interface Partition : NSObject
 
 @property (strong, nonatomic) NSString *address;
-@property (strong, nonatomic) NSArray *dataArray;
 @property (assign, nonatomic) NSUInteger partitionLength;
 @property (assign, nonatomic) NSUInteger checkSum;
 //段落数组，元素为16*最大包长个字节，第一代6202每小段有16段20个字节的数据
@@ -20,6 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (Partition *)partition:(NSString *)address data:(NSArray *)dataArray;
 + (Partition *)partition:(NSString *)address data:(NSArray *)dataArray packetLength:(int)pLength;
++ (Partition *)securityPartition:(NSString *)address data:(NSArray *)dataArray packetLength:(int)pLength;
 
 - (NSMutableArray *)analyzePartition:(NSArray *)dataArray;
 - (NSMutableArray *)analyzePartition:(NSArray *)dataArray length:(int)pLength;

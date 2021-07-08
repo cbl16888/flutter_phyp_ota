@@ -1,29 +1,42 @@
 #import "FlutterPhypOtaPlugin.h"
-#import <OTASDK/OTASDK.h>
-#import <OTASDK/OTAManager.h>
-#import <OTASDK/JCBluetoothManager.h>
+#import "OTASDK.h"
+//#import <OTASDK/OTAManager.h>
+//#import <OTASDK/JCBluetoothManager.h>
 
-@interface FlutterPhypOtaPlugin() <JCBluetoothManagerDelegate>
+@interface FlutterPhypOtaPlugin() <JCBluetoothManagerDelegate, OTAManagerDelegate>
 
 @property (nonatomic, strong) FlutterMethodChannel* channel;
-@property(nonatomic,strong) JCBluetoothManager* manager;
-@property (nonatomic, strong) NSString *address;
+@property(nonatomic, strong) JCBluetoothManager* bluetoothManager;
+@property(nonatomic, strong) OTAManager *otaManager;
+@property (nonatomic, strong) NSString *originUUID;
+@property (nonatomic, strong) NSString *macAddress;
 @property (nonatomic, strong) NSString *filePath;
 @property (nonatomic, assign) bool isAvailable;
 @property (nonatomic, assign) bool needScan;
 @property (nonatomic, assign) bool isFound;
 @property (nonatomic, strong) NSObject<FlutterPluginRegistrar>* registrar;
+@property (assign, nonatomic) BOOL isFirstConnectionOTA;//判断首次连接的网络是否是OTA
+@property (strong, nonatomic) NSString *OTAOrAPPType;//重新连接蓝牙时是OTA模式还是应用模式
 
 @end
 
 @implementation FlutterPhypOtaPlugin
 
-- (JCBluetoothManager *)manager{
-    if (!_manager) {
-        _manager = [JCBluetoothManager shareCBCentralManager];
-        _manager.delegate = self;
+- (JCBluetoothManager *)bluetoothManager{
+    if (!_bluetoothManager) {
+        _bluetoothManager = [JCBluetoothManager shareCBCentralManager];
+        _bluetoothManager.delegate = self;
+        self.OTAOrAPPType = @"APP";
     }
-    return _manager;
+    return _bluetoothManager;
+}
+
+- (OTAManager *)otaManager {
+    if (!_otaManager) {
+        _otaManager = [OTAManager shareOTAManager];
+        _otaManager.delegate = self;
+    }
+    return _otaManager;
 }
 
 
@@ -41,21 +54,24 @@
     if ([@"getPlatformVersion" isEqualToString:call.method]) {
         result([@"iOS " stringByAppendingString:[[UIDevice currentDevice] systemVersion]]);
     } else if ([@"startOta" isEqualToString:call.method]) {
-        self.address = call.arguments[@"address"];
+        NSString *originUUID = call.arguments[@"address"];
+        if (self.originUUID == nil || ![originUUID isEqualToString:self.originUUID]) {
+            self.macAddress = nil;
+            self.OTAOrAPPType = @"APP";
+        }
+        self.originUUID = originUUID;
         self.filePath = call.arguments[@"filePath"];
         BOOL fileInAsset = call.arguments[@"fileInAsset"];
-        
         if (fileInAsset) {
             NSString *key = [self.registrar lookupKeyForAsset:self.filePath];
             self.filePath = [[NSBundle mainBundle] pathForResource:key ofType:nil];
         }
-        
         if (self.isAvailable) {
             [self startScan];
         } else {
             self.needScan = true;
         }
-        [self manager];
+        [self bluetoothManager];
         result([NSNumber numberWithBool:true]);
     } else {
         result(FlutterMethodNotImplemented);
@@ -84,13 +100,13 @@
 - (void)startScan {
     self.isFound = false;
     self.needScan = false;
-    if ([self.manager isScanning]) {
-        [self.manager stopScan];
+    if ([self.bluetoothManager isScanning]) {
+        [self.bluetoothManager stopScan];
     }
-    [self.manager reScan];
+    [self.bluetoothManager reScan];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(10 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         if (!self.isFound) {
-            [self.manager stopScan];
+            [self.bluetoothManager stopScan];
             NSLog(@"扫描设备超时");
             [self.channel invokeMethod:@"onOtaError" arguments:@(-1)];
         }
@@ -109,11 +125,71 @@
              peripheral:(nullable CBPeripheral *)peripheral
       advertisementData:(nullable NSDictionary *)advertisementData
                    RSSI:(nullable NSNumber *)RSSI {
-    if ([peripheral.identifier.UUIDString isEqualToString:self.address]) {
-        self.isFound = true;
-        [self.manager stopScan];
-        NSLog(@"发现设备,停止扫描,开始连接");
-        [self.manager connectToPeripheral:peripheral];
+    if (peripheral.name.length < 1) {
+        return;
+    }
+    MLDLog(@"发现的设备广播中2：：%@ %@",peripheral.identifier.UUIDString,peripheral.name);
+    
+    //如果是dual Bank,又没有广播出MAC地址，可以直接通过名称或其他判断条件直接连接
+    if ([@"T20-620205130513" isEqualToString:peripheral.name]) {
+        [self.bluetoothManager connectToPeripheral:peripheral];
+        return;
+    }
+    //应用模式下根据UUID自动连接
+    if ([self.OTAOrAPPType isEqualToString:@"APP"]) {
+        if (self.isFirstConnectionOTA) {
+            //首次进入已经连接了OTA模式的蓝牙，提醒手动连接
+            self.isFirstConnectionOTA = NO;
+            return;
+        }
+        if ([peripheral.identifier.UUIDString isEqualToString:self.originUUID]) {
+            self.isFound = true;
+            [self.bluetoothManager stopScan];
+            NSLog(@"发现设备,停止扫描,开始连接");
+            NSObject *value = [advertisementData objectForKey:@"kCBAdvDataManufacturerData"];
+            self.macAddress = [JCDataConvert convertOriginalToMacString:value];
+            [self.bluetoothManager connectToPeripheral:peripheral];
+        }
+    } else if ([self.OTAOrAPPType isEqualToString:@"OTA"]) {
+        // 2 -解析广播数据
+        NSObject *value = [advertisementData objectForKey:@"kCBAdvDataManufacturerData"];
+        NSString *macStr = nil;
+        if (![value isKindOfClass: [NSArray class]]){
+            const char *valueString = [[value description] cStringUsingEncoding: NSUTF8StringEncoding];
+            if (valueString != NULL) {
+                
+                //获得ota模式下的Mac地址
+                NSString *tempStr = [NSString stringWithFormat:@"%s",valueString];
+                macStr = [JCDataConvert getOriginalToDataString:tempStr]; //获取到的mac地址
+                macStr = [JCDataConvert getPeripheralMac:macStr];
+                
+                const char *pConstChar = [self.macAddress UTF8String];
+                tempStr = [NSString stringWithFormat:@"%s",pConstChar];
+                NSString *oldMacStr = [JCDataConvert getOriginalToDataString:tempStr];
+
+                NSData *macd = [JCDataConvert hexToBytes:oldMacStr];
+                //取前两位转十进制
+                NSUInteger respond = [JCDataConvert oneByteToDecimalUint:[macd subdataWithRange:NSMakeRange(0, 1)]];//16进制转10进制
+
+                if ([self.OTAOrAPPType isEqualToString:@"OTA"]) {
+                    respond ++;
+                }
+
+                //转十六进制
+                NSString *firstStr = [JCDataConvert ToHex:(int)respond];
+                //替换
+                NSString *replacedStr = [NSString stringWithFormat:@"%@%@",firstStr,[oldMacStr substringFromIndex:2]];
+                replacedStr = [JCDataConvert convertOriginalToMacString:replacedStr];
+
+                if ([replacedStr isEqualToString:macStr] && macStr.length > 0) {
+                    MLDLog(@"重新连接APP模式首位地址前：%@",macStr);
+                    [self.bluetoothManager connectToPeripheral:peripheral];
+                }else if([peripheral.name isEqualToString:@"PPlusOTA"]||[peripheral.name isEqualToString:@"LefunOTA"]){
+//                    MLDLog(@"因为iOS无法获取设备MAC地址， OTA模式下BLE的广播数据必须携带MAC地址， 固件需要修改，跟APP无关！");
+                    [self.bluetoothManager connectToPeripheral:peripheral];
+                }
+            }
+        }
     }
 }
 
@@ -125,14 +201,53 @@
  */
 - (void)bluetoothManager:(nullable JCBluetoothManager*)manager
 didSucceedConectPeripheral:(nullable CBPeripheral *)peripheral {
-    self.manager.currentPeripheral = peripheral;
-    [self.manager setUpdateMode: true];
-    [self.manager startOTA];
-//    self.manager
-//    bSuc = [self.otaMnger startOTAWithLocFile:model.fileAbsolutePath];
-    NSLog(@"开始OTA升级");
-//    self.manager updateOTAFirmwareConfirmOrder:<#(NSArray *)#> andPath:<#(NSString *)#>
+    
 }
+
+- (void)bluetoothManager:(nullable JCBluetoothManager*)manager peripheral:(nullable CBPeripheral *)peripheral didUpdateNotificationStateForCharacteristic:(nonnull CBCharacteristic *)characteristic error:(nullable NSError *)error {
+    //获取MAC地址
+    if([characteristic.UUID isEqual:[CBUUID UUIDWithString:CHARACTERISTIC_MAC_READ_UUID]]) {
+        NSString *value = [NSString stringWithFormat:@"%@",characteristic.value];
+        NSString *macString = [JCDataConvert convertOriginalToMacString:value];
+        self.macAddress = value;
+        MLDLog(@"读取到的MAC特性 : %@, \n mac地址为value : %@", characteristic, macString);
+    }
+    if (self.macAddress != nil && error == nil) {
+        if (self.bluetoothManager.currentPeripheral != nil) {
+            [self startOTAUpdate];
+            MLDLog(@"开始OTA升级");
+        }
+    }
+    
+}
+
+- (void)startOTAUpdate{
+    MLDLog(@"startOTAUpdate ~~");
+    self.otaManager.filePath = self.filePath;
+    
+    if (self.otaManager.isSLB) {
+        [self.otaManager ParseBinFile];
+    }
+    else if (self.bluetoothManager.writeOTAWithoutRespCharac != nil ){
+        [self.otaManager updateOTAFirmwareConfirmPath];
+    }
+    else if([self.bluetoothManager.currentPeripheral.name hasSuffix:@"OTA"]) {
+        self.isFirstConnectionOTA = true;
+        if([self.otaManager.filePath hasSuffix:@"hexe16"]){
+            [self.otaManager securityOTAStart];
+        }else {
+            [self.otaManager updateOTAFirmwareConfirmPath];
+        }
+        
+    } else {
+        [self.otaManager startOTA];//开始OTA
+        self.OTAOrAPPType = @"OTA";
+    }
+    
+}
+
+
+#pragma mark - 蓝牙及相关设置初始化
 
 /*!
  *  蓝牙连接外设失败
@@ -192,7 +307,7 @@ didSucceedConectPeripheral:(nullable CBPeripheral *)peripheral {
  */
 -(void)startOTASuccess:(nullable JCBluetoothManager *) manager
           feedBackInfo:(BOOL)result reconnectBluetoothType:(NSString *)OTAOrAPPType {
-    NSLog(@"准备OTA模式, %@", OTAOrAPPType);
+    MLDLog(@"准备OTA模式, %@", OTAOrAPPType);
 }
 
 
@@ -204,7 +319,7 @@ didSucceedConectPeripheral:(nullable CBPeripheral *)peripheral {
  */
 -(void)reBootOTASuccess:(nullable JCBluetoothManager *) manager
            feedBackInfo:(BOOL)result reconnectBluetoothType:(NSString *)OTAOrAPPType {
-    NSLog(@"reboot成功之后, %@", OTAOrAPPType);
+    MLDLog(@"reboot成功之后, %@", OTAOrAPPType);
     [self.channel invokeMethod:@"onOtaSuccess" arguments:nil];
 }
 
@@ -217,9 +332,9 @@ didSucceedConectPeripheral:(nullable CBPeripheral *)peripheral {
 - (void)updateOTAProgressDataback:(nullable JCBluetoothManager *) manager
                        isComplete:(BOOL)isComplete {
     if (isComplete) {
-        NSLog(@"OTA 数据全部发送完成, %d", isComplete);
+        MLDLog(@"OTA 数据全部发送完成, %d", isComplete);
     } else {
-        NSLog(@"OTA 数据全部发送完成, %d", isComplete);
+        MLDLog(@"OTA 数据全部发送完成, %d", isComplete);
         [self.channel invokeMethod:@"onOtaError" arguments:@(-1)];
     }
     
