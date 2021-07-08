@@ -166,26 +166,26 @@
                 const char *pConstChar = [self.macAddress UTF8String];
                 tempStr = [NSString stringWithFormat:@"%s",pConstChar];
                 NSString *oldMacStr = [JCDataConvert getOriginalToDataString:tempStr];
-
+                
                 NSData *macd = [JCDataConvert hexToBytes:oldMacStr];
                 //取前两位转十进制
                 NSUInteger respond = [JCDataConvert oneByteToDecimalUint:[macd subdataWithRange:NSMakeRange(0, 1)]];//16进制转10进制
-
+                
                 if ([self.OTAOrAPPType isEqualToString:@"OTA"]) {
                     respond ++;
                 }
-
+                
                 //转十六进制
                 NSString *firstStr = [JCDataConvert ToHex:(int)respond];
                 //替换
                 NSString *replacedStr = [NSString stringWithFormat:@"%@%@",firstStr,[oldMacStr substringFromIndex:2]];
                 replacedStr = [JCDataConvert convertOriginalToMacString:replacedStr];
-
+                
                 if ([replacedStr isEqualToString:macStr] && macStr.length > 0) {
                     MLDLog(@"重新连接APP模式首位地址前：%@",macStr);
                     [self.bluetoothManager connectToPeripheral:peripheral];
                 }else if([peripheral.name isEqualToString:@"PPlusOTA"]||[peripheral.name isEqualToString:@"LefunOTA"]){
-//                    MLDLog(@"因为iOS无法获取设备MAC地址， OTA模式下BLE的广播数据必须携带MAC地址， 固件需要修改，跟APP无关！");
+                    //                    MLDLog(@"因为iOS无法获取设备MAC地址， OTA模式下BLE的广播数据必须携带MAC地址， 固件需要修改，跟APP无关！");
                     [self.bluetoothManager connectToPeripheral:peripheral];
                 }
             }
@@ -257,7 +257,9 @@ didSucceedConectPeripheral:(nullable CBPeripheral *)peripheral {
  */
 - (void)bluetoothManager:(nullable JCBluetoothManager*)manager
  didFailConectPeripheral:(nullable CBPeripheral *)peripheral {
-    [self.channel invokeMethod:@"onOtaError" arguments:@(-1)];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.channel invokeMethod:@"onOtaError" arguments:@(-1)];
+    });
 }
 
 /*!
@@ -285,7 +287,7 @@ didSucceedConectPeripheral:(nullable CBPeripheral *)peripheral {
     
 }
 
-#pragma mark -- 新增的内容
+#pragma mark -- OTA
 
 /**
  OTA progress
@@ -293,9 +295,11 @@ didSucceedConectPeripheral:(nullable CBPeripheral *)peripheral {
  @param manager 蓝牙管理中心
  @param progressValue 进度值
  */
-- (void)updateOTAProgressDataback:(nullable JCBluetoothManager *) manager
+- (void)updateOTAProgressDataback:(nullable OTAManager *) manager
                      feedBackInfo:(float)progressValue {
-    [self.channel invokeMethod:@"onOtaProcess" arguments:@(progressValue)];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.channel invokeMethod:@"onOtaProcess" arguments:@(progressValue)];
+    });
 }
 
 
@@ -317,10 +321,9 @@ didSucceedConectPeripheral:(nullable CBPeripheral *)peripheral {
  @param manager 蓝牙管理中心
  @param result 返回的结果
  */
--(void)reBootOTASuccess:(nullable JCBluetoothManager *) manager
-           feedBackInfo:(BOOL)result reconnectBluetoothType:(NSString *)OTAOrAPPType {
+- (void)reBootOTASuccess:(nullable OTAManager *) manager
+            feedBackInfo:(BOOL)result reconnectBluetoothType:(NSString *_Nullable)OTAOrAPPType {
     MLDLog(@"reboot成功之后, %@", OTAOrAPPType);
-    [self.channel invokeMethod:@"onOtaSuccess" arguments:nil];
 }
 
 /**
@@ -329,13 +332,18 @@ didSucceedConectPeripheral:(nullable CBPeripheral *)peripheral {
  @param manager 蓝牙管理中心
  @param isComplete 完成
  */
-- (void)updateOTAProgressDataback:(nullable JCBluetoothManager *) manager
+- (void)updateOTAProgressDataback:(nullable OTAManager *) manager
                        isComplete:(BOOL)isComplete {
     if (isComplete) {
         MLDLog(@"OTA 数据全部发送完成, %d", isComplete);
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self.channel invokeMethod:@"onOtaSuccess" arguments:nil];
+        });
     } else {
-        MLDLog(@"OTA 数据全部发送完成, %d", isComplete);
-        [self.channel invokeMethod:@"onOtaError" arguments:@(-1)];
+        MLDLog(@"OTA 数据全部发送失败, %d", isComplete);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.channel invokeMethod:@"onOtaError" arguments:@(-1)];
+        });
     }
     
 }
@@ -347,9 +355,11 @@ didSucceedConectPeripheral:(nullable CBPeripheral *)peripheral {
  @param manager 蓝牙管理中心
  @param errorCode 错误码
  */
-- (void)updateOTAErrorCallBack:(nullable JCBluetoothManager *) manager
+- (void)updateOTAErrorCallBack:(nullable OTAManager *) manager
                      errorCode:(NSUInteger)errorCode {
-    [self.channel invokeMethod:@"onOtaError" arguments:@(errorCode)];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.channel invokeMethod:@"onOtaError" arguments:@(errorCode)];
+    });
 }
 
 @end

@@ -3,18 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="721abe53-37e0-4ca9-b728-0955b89fad8e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/ios/Podfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/Podfile.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ios/Classes/FlutterPhypOtaPlugin.m" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Classes/FlutterPhypOtaPlugin.m" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Frameworks/OTASDK.framework/Headers/JCBluetoothManager.h" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Frameworks/OTASDK.framework/Headers/JCBluetoothManager.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Frameworks/OTASDK.framework/Headers/JCBlutoothInfoModel.h" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Frameworks/OTASDK.framework/Headers/JCBlutoothInfoModel.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Frameworks/OTASDK.framework/Headers/JCDataConvert.h" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Frameworks/OTASDK.framework/Headers/JCDataConvert.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Frameworks/OTASDK.framework/Headers/OTAManager.h" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Frameworks/OTASDK.framework/Headers/OTAManager.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Frameworks/OTASDK.framework/Headers/OTASDK.h" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Frameworks/OTASDK.framework/Headers/OTASDK.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Frameworks/OTASDK.framework/Headers/Partition.h" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Frameworks/OTASDK.framework/Headers/Partition.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Frameworks/OTASDK.framework/Info.plist" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Frameworks/OTASDK.framework/Info.plist" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Frameworks/OTASDK.framework/Modules/module.modulemap" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Frameworks/OTASDK.framework/Modules/module.modulemap" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Frameworks/OTASDK.framework/OTASDK" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Frameworks/OTASDK.framework/OTASDK" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/flutter_phyp_ota.podspec" beforeDir="false" afterPath="$PROJECT_DIR$/ios/flutter_phyp_ota.podspec" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,22 +64,22 @@
       <screen x="0" y="25" width="1440" height="821" />
     </state>
     <state x="423" y="25" key="#xdebugger.evaluate/0.25.1440.821/1440.-45.1920.1055@0.25.1440.821" timestamp="1624430069405" />
-    <state width="1386" height="286" key="GridCell.Tab.0.bottom" timestamp="1625738709376">
+    <state width="1386" height="425" key="GridCell.Tab.0.bottom" timestamp="1625742430462">
       <screen x="0" y="25" width="1440" height="821" />
     </state>
-    <state width="1386" height="286" key="GridCell.Tab.0.bottom/0.25.1440.821/1440.-45.1920.1055@0.25.1440.821" timestamp="1625738709376" />
-    <state width="1386" height="286" key="GridCell.Tab.0.center" timestamp="1625738709375">
+    <state width="1386" height="425" key="GridCell.Tab.0.bottom/0.25.1440.821/1440.-45.1920.1055@0.25.1440.821" timestamp="1625742430462" />
+    <state width="1386" height="425" key="GridCell.Tab.0.center" timestamp="1625742430461">
       <screen x="0" y="25" width="1440" height="821" />
     </state>
-    <state width="1386" height="286" key="GridCell.Tab.0.center/0.25.1440.821/1440.-45.1920.1055@0.25.1440.821" timestamp="1625738709375" />
-    <state width="1386" height="286" key="GridCell.Tab.0.left" timestamp="1625738709375">
+    <state width="1386" height="425" key="GridCell.Tab.0.center/0.25.1440.821/1440.-45.1920.1055@0.25.1440.821" timestamp="1625742430461" />
+    <state width="1386" height="425" key="GridCell.Tab.0.left" timestamp="1625742430461">
       <screen x="0" y="25" width="1440" height="821" />
     </state>
-    <state width="1386" height="286" key="GridCell.Tab.0.left/0.25.1440.821/1440.-45.1920.1055@0.25.1440.821" timestamp="1625738709375" />
-    <state width="1386" height="286" key="GridCell.Tab.0.right" timestamp="1625738709376">
+    <state width="1386" height="425" key="GridCell.Tab.0.left/0.25.1440.821/1440.-45.1920.1055@0.25.1440.821" timestamp="1625742430461" />
+    <state width="1386" height="425" key="GridCell.Tab.0.right" timestamp="1625742430462">
       <screen x="0" y="25" width="1440" height="821" />
     </state>
-    <state width="1386" height="286" key="GridCell.Tab.0.right/0.25.1440.821/1440.-45.1920.1055@0.25.1440.821" timestamp="1625738709376" />
+    <state width="1386" height="425" key="GridCell.Tab.0.right/0.25.1440.821/1440.-45.1920.1055@0.25.1440.821" timestamp="1625742430462" />
     <state x="359" y="124" width="721" height="622" key="find.popup" timestamp="1625539494056">
       <screen x="0" y="25" width="1440" height="821" />
     </state>
