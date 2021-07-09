@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="721abe53-37e0-4ca9-b728-0955b89fad8e" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/ios/Classes/FlutterPhypOtaPlugin.m" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Classes/FlutterPhypOtaPlugin.m" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/flutter_phyp_ota.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/flutter_phyp_ota.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

@@ -346,6 +346,7 @@ didSucceedConectPeripheral:(nullable CBPeripheral *)peripheral {
                        isComplete:(BOOL)isComplete {
     if (isComplete) {
         MLDLog(@"OTA 数据全部发送完成, %d", isComplete);
+        [self.bluetoothManager stopScan];
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self.channel invokeMethod:@"onOtaSuccess" arguments:nil];
         });
