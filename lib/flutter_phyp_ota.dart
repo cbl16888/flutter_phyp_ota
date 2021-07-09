@@ -13,7 +13,6 @@ class FlutterPhypOta {
   static Future<bool> startOta(String address, String filePath, {bool fileInAsset = false, PhypOtaProcessListener listener}) async {
     assert(address != null, "address can not be null");
     assert(filePath != null, "file can not be null");
-
     _channel.setMethodCallHandler((MethodCall call) {
       switch (call.method) {
         case "onOtaError":
@@ -35,6 +34,12 @@ class FlutterPhypOta {
       'address': address,
       'filePath': filePath,
       'fileInAsset': fileInAsset
+    });
+  }
+
+  static Future stopOta() async {
+    _channel.setMethodCallHandler((MethodCall call) {
+      return null;
     });
   }
 }
