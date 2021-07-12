@@ -3,6 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="721abe53-37e0-4ca9-b728-0955b89fad8e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/android/.idea/caches/build_file_checksums.ser" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/Classes/OTASDK/Manager/Bluetooth/JCBluetoothManager.m" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Classes/OTASDK/Manager/Bluetooth/JCBluetoothManager.m" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

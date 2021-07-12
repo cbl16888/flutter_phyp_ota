@@ -26,7 +26,7 @@
     if (!_bluetoothManager) {
         _bluetoothManager = [JCBluetoothManager shareCBCentralManager];
         _bluetoothManager.delegate = self;
-        self.OTAOrAPPType = @"APP";
+//        self.OTAOrAPPType = @"APP";
     }
     return _bluetoothManager;
 }
@@ -58,6 +58,14 @@
         if (self.originUUID == nil || ![originUUID isEqualToString:self.originUUID]) {
             self.macAddress = nil;
             self.OTAOrAPPType = @"APP";
+            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+            NSString *macString = [defaults objectForKey:[NSString stringWithFormat:@"MacAdress%@", originUUID]];
+            if (nil != macString && [macString isKindOfClass:[NSString class]]) {
+                self.macAddress = macString;
+                if (nil != self.macAddress) {
+                    self.OTAOrAPPType = @"OTA";
+                }
+            }
         }
         self.originUUID = originUUID;
         self.filePath = call.arguments[@"filePath"];
@@ -109,6 +117,11 @@
             [self.bluetoothManager stopScan];
             MLDLog(@"扫描设备超时");
             [self.channel invokeMethod:@"onOtaError" arguments:@(-1)];
+            if ([self.OTAOrAPPType isEqualToString:@"APP"]) {
+                self.OTAOrAPPType = @"OTA";
+            } else {
+                self.OTAOrAPPType = @"APP";
+            }
         }
     });
 }
@@ -146,8 +159,8 @@
             self.isFound = true;
             [self.bluetoothManager stopScan];
             MLDLog(@"发现设备,停止扫描,开始连接");
-            NSObject *value = [advertisementData objectForKey:@"kCBAdvDataManufacturerData"];
-            self.macAddress = [JCDataConvert convertOriginalToMacString:value];
+//            NSObject *value = [advertisementData objectForKey:@"kCBAdvDataManufacturerData"];
+//            self.macAddress = [JCDataConvert convertOriginalToMacString:value];
             [self.bluetoothManager connectToPeripheral:peripheral];
         }
     } else if ([self.OTAOrAPPType isEqualToString:@"OTA"]) {
@@ -156,8 +169,8 @@
             self.isFound = true;
             [self.bluetoothManager stopScan];
             MLDLog(@"发现设备,停止扫描,开始连接");
-            NSObject *value = [advertisementData objectForKey:@"kCBAdvDataManufacturerData"];
-            self.macAddress = [JCDataConvert convertOriginalToMacString:value];
+//            NSObject *value = [advertisementData objectForKey:@"kCBAdvDataManufacturerData"];
+//            self.macAddress = [JCDataConvert convertOriginalToMacString:value];
             [self.bluetoothManager connectToPeripheral:peripheral];
             return;
         }
@@ -172,31 +185,17 @@
                 NSString *tempStr = [NSString stringWithFormat:@"%s",valueString];
                 macStr = [JCDataConvert getOriginalToDataString:tempStr]; //获取到的mac地址
                 macStr = [JCDataConvert getPeripheralMac:macStr];
+                NSString * lastMac = [macStr componentsSeparatedByString:@":"].lastObject;
+                NSInteger targetValue = [JCDataConvert hexNumberStringToNumber:lastMac] - 1;
 
                 const char *pConstChar = [self.macAddress UTF8String];
                 tempStr = [NSString stringWithFormat:@"%s",pConstChar];
-                NSString *oldMacStr = [JCDataConvert getOriginalToDataString:tempStr];
-
-                NSData *macd = [JCDataConvert hexToBytes:oldMacStr];
-                //取前两位转十进制
-                NSUInteger respond = [JCDataConvert oneByteToDecimalUint:[macd subdataWithRange:NSMakeRange(0, 1)]];//16进制转10进制
-
-                if ([self.OTAOrAPPType isEqualToString:@"OTA"]) {
-                    respond ++;
-                }
-
-                //转十六进制
-                NSString *firstStr = [JCDataConvert ToHex:(int)respond];
-                //替换
-                NSString *replacedStr = [NSString stringWithFormat:@"%@%@",firstStr,[oldMacStr substringFromIndex:2]];
-                replacedStr = [JCDataConvert convertOriginalToMacString:replacedStr];
-
-                if ([replacedStr isEqualToString:macStr] && macStr.length > 0) {
-                    MLDLog(@"重新连接APP模式首位地址前：%@",macStr);
-                    [self.bluetoothManager connectToPeripheral:peripheral];
-                }else if([peripheral.name isEqualToString:@"PPlusOTA"]||[peripheral.name isEqualToString:@"LefunOTA"]){
-                    //                    MLDLog(@"因为iOS无法获取设备MAC地址， OTA模式下BLE的广播数据必须携带MAC地址， 固件需要修改，跟APP无关！");
-                    [self.bluetoothManager connectToPeripheral:peripheral];
+                lastMac = [tempStr componentsSeparatedByString:@":"].lastObject;
+                if (targetValue == [JCDataConvert hexNumberStringToNumber:lastMac]) {
+                    if ([[macStr substringToIndex:macStr.length - 3] isEqualToString:[tempStr substringToIndex:tempStr.length - 3]]) {
+                        MLDLog(@"重新连接APP模式首位地址前：%@",macStr);
+                        [self.bluetoothManager connectToPeripheral:peripheral];
+                    }
                 }
             }
         }
@@ -219,8 +218,13 @@ didSucceedConectPeripheral:(nullable CBPeripheral *)peripheral {
     if([characteristic.UUID isEqual:[CBUUID UUIDWithString:CHARACTERISTIC_MAC_READ_UUID]]) {
         NSString *value = [NSString stringWithFormat:@"%@",characteristic.value];
         NSString *macString = [JCDataConvert convertOriginalToMacString:value];
-        self.macAddress = value;
-        MLDLog(@"读取到的MAC特性 : %@, \n mac地址为value : %@", characteristic, macString);
+        if ([macString containsString:@":"] && [peripheral.identifier.UUIDString isEqualToString:self.originUUID]) {
+            self.macAddress = macString;
+            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+            [defaults setObject:macString forKey:[NSString stringWithFormat:@"MacAdress%@", self.originUUID]];
+            [defaults synchronize];
+        }
+//        MLDLog(@"读取到的MAC特性 : %@, \n mac地址为value : %@", characteristic, macString);
     }
     if (self.macAddress != nil && error == nil) {
         if (self.bluetoothManager.currentPeripheral != nil) {
