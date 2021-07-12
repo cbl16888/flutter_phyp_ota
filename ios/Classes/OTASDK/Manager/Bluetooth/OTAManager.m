@@ -344,6 +344,7 @@ static OTAManager *_manager;
                     if ([self.delegate respondsToSelector:@selector(updateOTAErrorCallBack:errorCode:)]) {
                         [self.delegate updateOTAErrorCallBack:self errorCode:respondType];
                         [[JCBluetoothManager shareCBCentralManager] disConnectToPeripheral];
+                        self.fileManager = nil;
                     }
                 }
                     break;
@@ -352,6 +353,7 @@ static OTAManager *_manager;
                     if ([self.delegate respondsToSelector:@selector(updateOTAErrorCallBack:errorCode:)]) {
                         [self.delegate updateOTAErrorCallBack:self errorCode:respondType];
                         [[JCBluetoothManager shareCBCentralManager] disConnectToPeripheral];
+                        self.fileManager = nil;
                     }
                 }
                     break;
