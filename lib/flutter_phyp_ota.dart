@@ -10,7 +10,7 @@ class FlutterPhypOta {
     return version;
   }
 
-  static Future<bool> startOta(String address, String filePath, {bool fileInAsset = false, PhypOtaProcessListener listener}) async {
+  static Future<bool> startOta(String? address, String? filePath, {bool fileInAsset = false, PhypOtaProcessListener? listener}) async {
     assert(address != null, "address can not be null");
     assert(filePath != null, "file can not be null");
     _channel.setMethodCallHandler((MethodCall call) {
@@ -27,7 +27,7 @@ class FlutterPhypOta {
         default:
           break;
       }
-      return null;
+      return Future.value(true);
     });
 
     return await _channel.invokeMethod('startOta', <String, dynamic>{
@@ -39,7 +39,7 @@ class FlutterPhypOta {
 
   static Future stopOta() async {
     _channel.setMethodCallHandler((MethodCall call) {
-      return null;
+      return Future.value(true);
     });
   }
 }
@@ -49,5 +49,5 @@ class PhypOtaProcessListener {
   final void Function(double progress) onOtaProcess;
   final void Function() onOtaSuccess;
 
-  PhypOtaProcessListener({this.onOtaError, this.onOtaProcess, this.onOtaSuccess});
+  PhypOtaProcessListener({required this.onOtaError, required this.onOtaProcess, required this.onOtaSuccess});
 }

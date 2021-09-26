@@ -20,10 +20,10 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   String _platformVersion = 'Unknown';
-  BluetoothDevice _device;
-  String _commandReadNotifyCharacter;
-  String _commandReadWriteCharacter;
-  String _otaCharacter;
+  BluetoothDevice? _device;
+  String? _commandReadNotifyCharacter;
+  String? _commandReadWriteCharacter;
+  String? _otaCharacter;
   bool _isConnected = false;
   bool _isOta = false;
   var deviceName = "ZLY_2012080145697";
@@ -128,10 +128,10 @@ class _MyAppState extends State<MyApp> {
   _connect({int timeout = 5}) async {
     DebugLog.logDebug("修改蓝牙连接状态为: 连接中");
     try {
-      bool isSuccess = await _device.connect(timeout).then((value) {
+      bool isSuccess = await _device!.connect(timeout).then((value) {
         if (value) {
           DebugLog.logDebug("连接设备成功");
-          _device.eventCallback = (BluetoothEvent event) {
+          _device!.eventCallback = (BluetoothEvent event) {
             if (event is BluetoothEventNotifyData) {
               return;
             } else if (event is BluetoothEventDeviceStateChange) {
@@ -161,7 +161,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   _discoverServices() async {
-    await _device.discoverCharacteristics().then((characteristics) async {
+    await _device!.discoverCharacteristics().then((characteristics) async {
       for (String _characteristic in characteristics) {
         if (_characteristic.toLowerCase() == commandReadNotifyCharactersId) {
           _commandReadNotifyCharacter = _characteristic;
@@ -206,7 +206,7 @@ class _MyAppState extends State<MyApp> {
       DebugLog.logDebug("蓝牙设备还未连接");
       return;
     }
-    var address = _device.deviceId;
+    var address = _device!.deviceId;
     if (Platform.isIOS) {
       await _disconnectDevice();
     }

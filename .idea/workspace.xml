@@ -3,6 +3,13 @@
   <component name="ChangeListManager">
     <list default="true" id="721abe53-37e0-4ca9-b728-0955b89fad8e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/example/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/example/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/test/widget_test.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/test/widget_test.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/flutter_phyp_ota.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/flutter_phyp_ota.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,22 +70,22 @@
       <screen x="0" y="25" width="1440" height="821" />
     </state>
     <state x="423" y="25" key="#xdebugger.evaluate/0.25.1440.821/1440.-45.1920.1055@0.25.1440.821" timestamp="1624430069405" />
-    <state width="1386" height="400" key="GridCell.Tab.0.bottom" timestamp="1625744634694">
+    <state width="1386" height="400" key="GridCell.Tab.0.bottom" timestamp="1632642364939">
       <screen x="0" y="25" width="1440" height="821" />
     </state>
-    <state width="1386" height="400" key="GridCell.Tab.0.bottom/0.25.1440.821/1440.-45.1920.1055@0.25.1440.821" timestamp="1625744634694" />
-    <state width="1386" height="400" key="GridCell.Tab.0.center" timestamp="1625744634693">
+    <state width="1386" height="400" key="GridCell.Tab.0.bottom/0.25.1440.821/1440.-45.1920.1055@0.25.1440.821" timestamp="1632642364939" />
+    <state width="1386" height="400" key="GridCell.Tab.0.center" timestamp="1632642364938">
       <screen x="0" y="25" width="1440" height="821" />
     </state>
-    <state width="1386" height="400" key="GridCell.Tab.0.center/0.25.1440.821/1440.-45.1920.1055@0.25.1440.821" timestamp="1625744634693" />
-    <state width="1386" height="400" key="GridCell.Tab.0.left" timestamp="1625744634693">
+    <state width="1386" height="400" key="GridCell.Tab.0.center/0.25.1440.821/1440.-45.1920.1055@0.25.1440.821" timestamp="1632642364938" />
+    <state width="1386" height="400" key="GridCell.Tab.0.left" timestamp="1632642364937">
       <screen x="0" y="25" width="1440" height="821" />
     </state>
-    <state width="1386" height="400" key="GridCell.Tab.0.left/0.25.1440.821/1440.-45.1920.1055@0.25.1440.821" timestamp="1625744634693" />
-    <state width="1386" height="400" key="GridCell.Tab.0.right" timestamp="1625744634694">
+    <state width="1386" height="400" key="GridCell.Tab.0.left/0.25.1440.821/1440.-45.1920.1055@0.25.1440.821" timestamp="1632642364937" />
+    <state width="1386" height="400" key="GridCell.Tab.0.right" timestamp="1632642364939">
       <screen x="0" y="25" width="1440" height="821" />
     </state>
-    <state width="1386" height="400" key="GridCell.Tab.0.right/0.25.1440.821/1440.-45.1920.1055@0.25.1440.821" timestamp="1625744634694" />
+    <state width="1386" height="400" key="GridCell.Tab.0.right/0.25.1440.821/1440.-45.1920.1055@0.25.1440.821" timestamp="1632642364939" />
     <state x="359" y="124" width="721" height="622" key="find.popup" timestamp="1625539494056">
       <screen x="0" y="25" width="1440" height="821" />
     </state>
